@@ -1,0 +1,35 @@
+[package]
+edition = "2021"
+name    = "ESP32C6Screen"
+version = "0.1.0"
+
+[[bin]]
+name = "ESP32C6Screen"
+path = "./src/bin/main.rs"
+
+[dependencies]
+critical-section = "1.2.0"
+embassy-embedded-hal = "0.3.0"
+embassy-executor = "0.7.0"
+embassy-sync = "0.6.2"
+embassy-time = "0.4.0"
+embedded-graphics = "0.8.1"
+embedded-hal-bus = "0.3.0"
+esp-hal          = { version = "1.0.0-beta.0", features = ["esp32c6", "unstable"] }
+esp-println = { version = "0.13.1", features = ["esp32c6"] }
+mipidsi = "0.9.0"
+shared-bus = "0.3"
+
+[profile.dev]
+# Rust debug is too slow.
+# For debug builds always builds with some optimization
+opt-level = "s"
+
+[profile.release]
+codegen-units    = 1     # LLVM can perform better optimizations using a single thread
+debug            = 2
+debug-assertions = false
+incremental      = false
+lto              = 'fat'
+opt-level        = 's'
+overflow-checks  = false
